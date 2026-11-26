@@ -50,18 +50,15 @@ Credentials never go in code. CI gets them from repository secrets and the `main
 ## Commits and pull requests
 `main` takes changes only through pull requests with a passing `terraform` check, merged by squash. Only the pull request title reaches `main`; the body and the branch commits are dropped. Write the title with the most care.
 
-- Title and commit messages: `type: description`, lowercase, imperative, no period, under 60 characters.
-  - `feat`: a new resource, record or service. `feat: add the api.dgsw.kr record`
-  - `fix`: a resource configured wrong. `fix: point spot.dgsw.kr at the new vercel target`
-  - `chore`: cleanup, version bumps, `import`/`removed` follow-ups. `chore: drop applied dgsw.kr import blocks`
+- Titles and commit messages: `type: description`, lowercase, imperative, no period, under 60 characters.
+  - `feat`: a new resource, record or service. `feat: add the app.example.com record`
+  - `fix`: a resource configured wrong. `fix: point app.example.com at the new target`
+  - `chore`: cleanup, version bumps, `import`/`removed` follow-ups. `chore: drop applied import blocks`
   - `refactor`: the same resources, different code. `refactor: move records into records.tf`
-  - `docs`: README or AGENTS.md only.
-- One logical change per pull request. Branch from `main` and name the branch after the change, like `add-api-record`.
-- Body, in English:
-  - What changes, in which unit, and why.
-  - What a reviewer must check in the plan, such as the ID or name servers of anything destroyed.
-  - Any follow-up pull request, such as dropping `import` blocks.
-- After opening, wait for the `terraform` check and read each unit's plan in the CI log. Report `Plan: N to import, N to add, N to change, N to destroy` per unit to the user. If the plan destroys or replaces something the pull request did not mean to touch, stop and say so.
+  - `docs`: documentation only. `docs: explain the bootstrap steps`
+- No `Co-authored-by` or other trailers, and no tool or agent attribution in titles, bodies or commits.
+- One logical change per pull request. Branch from `main` and name the branch after the change, like `add-app-record`.
+- Write the body from `.github/pull_request_template.md`, in English. After the `terraform` check finishes, read each unit's plan in the CI log and fill in the Plan section. If a plan destroys or replaces something the pull request did not mean to touch, stop and say so.
 - Merge only when the user asks.
 
 ## Never
