@@ -48,9 +48,18 @@ Credentials never go in code. CI gets them from repository secrets and the `main
 - Names are lowercase snake_case. No resource named after its type, like `cloudflare_r2_bucket.bucket`.
 
 ## Commits and pull requests
-- `type: description`, lowercase, no period. Types: feat, fix, chore, refactor, docs.
-- One logical change per commit.
-- `main` takes changes only through pull requests with a passing `terraform` check, merged by squash. The pull request title becomes the commit title, so it follows the same format.
+`main` takes changes only through pull requests with a passing `terraform` check, merged by squash. Only the pull request title reaches `main`; the body and the branch commits are dropped. Write the title with the most care.
+
+- Titles and commit messages: `type: description`, lowercase, imperative, no period, under 60 characters.
+  - `feat`: a new resource, record or service. `feat: add the app.example.com record`
+  - `fix`: a resource configured wrong. `fix: point app.example.com at the new target`
+  - `chore`: cleanup, version bumps, `import`/`removed` follow-ups. `chore: drop applied import blocks`
+  - `refactor`: the same resources, different code. `refactor: move records into records.tf`
+  - `docs`: documentation only. `docs: explain the bootstrap steps`
+- No `Co-authored-by` or other trailers, and no tool or agent attribution in titles, bodies or commits.
+- One logical change per pull request. Branch from `main` and name the branch after the change, like `add-app-record`.
+- Write the body from `.github/pull_request_template.md`, in English. After the `terraform` check finishes, read each unit's plan in the CI log and fill in the Plan section. If a plan destroys or replaces something the pull request did not mean to touch, stop and say so.
+- Merge only when the user asks.
 
 ## Never
 - `terraform apply`, `destroy`, `import`, or `state` commands locally. Apply runs only from CI in the `main` environment. The one exception is the first apply of `terraform/cloudflare/dgsw/global/bootstrap/`, which creates the state bucket.
